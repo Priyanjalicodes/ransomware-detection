@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Admin Login · CloudShield{% endblock %}
+{% block content %}
+<div class="login-wrap"><section class="panel login-panel"><p class="eyebrow">RESTRICTED ACCESS</p><h1 class="h3 fw-bold">Administrator login</h1><p class="text-secondary">Sign in to review alerts and export logs.</p>
+<form method="post"><div class="mb-3"><label class="form-label" for="username">Username</label><input class="form-control" id="username" name="username" required autocomplete="username"></div><div class="mb-3"><label class="form-label" for="password">Password</label><input class="form-control" id="password" name="password" type="password" required autocomplete="current-password"></div><button class="btn btn-primary w-100">Sign in</button></form>
+<p class="small text-secondary mt-3 mb-0">Demo defaults: <code>admin</code> / <code>cloudshield-demo</code>. Change these in your .env file before sharing or deploying.</p></section></div>
+{% endblock %}

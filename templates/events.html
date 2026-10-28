@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Event History · CloudShield{% endblock %}
+{% block content %}
+<div class="mb-4"><p class="eyebrow mb-1">AUDIT LOG</p><h1 class="h2 fw-bold">Event history</h1><p class="text-secondary">Review recorded simulated events and the reason each event was classified.</p></div>
+<section class="panel">
+<form method="get" class="row g-2 align-items-end mb-3">
+  <div class="col-sm-4"><label class="form-label" for="severity">Filter by severity</label><select id="severity" name="severity" class="form-select"><option value="">All severities</option>{% for s in ['Low','Medium','High'] %}<option value="{{ s }}" {% if severity == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div>
+  <div class="col-sm-auto"><button class="btn btn-primary">Apply filter</button></div>
+</form>
+{% if events %}<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Timestamp</th><th>File</th><th>Type</th><th>Score</th><th>Severity</th><th>Reason</th><th>Review</th></tr></thead><tbody>
+{% for e in events %}<tr><td class="small text-secondary">{{ e.created_at }}</td><td class="text-break">{{ e.file_name }}</td><td>{{ e.event_type }}</td><td>{{ e.risk_score }}/100</td><td><span class="severity {{ e.severity|lower }}">{{ e.severity }}</span></td><td class="small">{{ e.reasons }}</td><td>{% if e.reviewed %}Reviewed{% elif e.severity == 'High' and logged_in %}<form action="{{ url_for('review', event_id=e.id) }}" method="post"><button class="btn btn-sm btn-outline-secondary">Review</button></form>{% else %}—{% endif %}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="text-secondary mb-0">No matching events found.</p>{% endif %}
+</section>
+{% endblock %}
