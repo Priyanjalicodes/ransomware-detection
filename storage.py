@@ -82,8 +82,10 @@ def get_stats():
         total = conn.execute("SELECT COUNT(*) FROM events").fetchone()[0]
         suspicious = conn.execute("SELECT COUNT(*) FROM events WHERE severity IN ('Medium', 'High')").fetchone()[0]
         high = conn.execute("SELECT COUNT(*) FROM events WHERE severity = 'High' AND reviewed = 0").fetchone()[0]
+        high_total = conn.execute("SELECT COUNT(*) FROM events WHERE severity = 'High'").fetchone()[0]
+        medium = conn.execute("SELECT COUNT(*) FROM events WHERE severity = 'Medium'").fetchone()[0]
         low = conn.execute("SELECT COUNT(*) FROM events WHERE severity = 'Low'").fetchone()[0]
-    return {"total": total, "suspicious": suspicious, "high": high, "low": low}
+    return {"total": total, "suspicious": suspicious, "high": high, "high_total": high_total, "medium": medium, "low": low}
 
 
 def clear_demo_events():

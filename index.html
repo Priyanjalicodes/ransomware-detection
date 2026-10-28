@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Command Center · CloudShield{% endblock %}
+{% block content %}
+<section class="hero-panel reveal">
+  <div class="hero-grid"></div><div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div>
+  <div class="hero-content">
+    <div class="eyebrow"><span class="eyebrow-line"></span> SECURITY OPERATIONS CENTER <span class="eyebrow-tag">SOC / 01</span></div>
+    <h1>See the signal.<br><span>Stop the threat.</span></h1>
+    <p class="hero-copy">A real-time style command center for analyzing suspicious file activity patterns in a safe simulation.</p>
+    <div class="hero-meta"><span class="live-chip"><i></i> DEMO SYSTEM ONLINE</span><span class="meta-divider">/</span><span class="mono-text">RULE ENGINE · ACTIVE</span></div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="radar-ring ring-1"></div><div class="radar-ring ring-2"></div><div class="radar-ring ring-3"></div><div class="radar-cross cross-h"></div><div class="radar-cross cross-v"></div><div class="radar-sweep"></div><div class="radar-center"><svg viewBox="0 0 24 24"><path d="M12 2.5 20 5.7v5.5c0 4.7-3.1 8.2-8 10.3-4.9-2.1-8-5.6-8-10.3V5.7L12 2.5Z"/><path d="m8.5 12.2 2.2 2.2 4.8-5"/></svg></div>
+    <span class="radar-label radar-label-a">SIGNAL SCAN <b>ACTIVE</b></span><span class="radar-label radar-label-b">ENCRYPTION WATCH <b>ARMED</b></span><span class="radar-point point-a"></span><span class="radar-point point-b"></span><span class="radar-point point-c"></span>
+  </div>
+  <div class="hero-bottom"><span>MONITORING LAYER <b>01</b></span><span>TELEMETRY <b>SIMULATED</b></span><span class="hero-coordinates">CS-7F.29 / SECURE CONSOLE</span></div>
+</section>
+
+<div class="section-heading reveal"><div><span class="section-index">01</span><h2>Threat overview</h2><p>Snapshot of recorded demo events</p></div><span class="updated-label"><span class="tiny-pulse"></span> DATABASE SNAPSHOT</span></div>
+<div class="row g-3 stats-row mb-4">
+  <div class="col-6 col-xl-3"><article class="stat-card stat-cyan reveal"><div class="stat-top"><span class="stat-icon">⌁</span><span class="stat-code">EVT / 01</span></div><div class="stat-label">Total events</div><div class="stat-number count-up" data-count="{{ stats.total }}">{{ stats.total }}</div><div class="stat-foot"><span class="foot-dot cyan"></span> Recorded activity <span class="sparkline spark-cyan">▁▃▂▅▃▆▄█</span></div></article></div>
+  <div class="col-6 col-xl-3"><article class="stat-card stat-purple reveal"><div class="stat-top"><span class="stat-icon">⌘</span><span class="stat-code">RISK / 02</span></div><div class="stat-label">Suspicious events</div><div class="stat-number count-up" data-count="{{ stats.suspicious }}">{{ stats.suspicious }}</div><div class="stat-foot"><span class="foot-dot purple"></span> Medium or high risk <span class="sparkline spark-purple">▁▂▃▂▅▄▆█</span></div></article></div>
+  <div class="col-6 col-xl-3"><article class="stat-card stat-red reveal"><div class="stat-top"><span class="stat-icon">⚠</span><span class="stat-code">ALERT / 03</span></div><div class="stat-label">Unreviewed high risk</div><div class="stat-number count-up" data-count="{{ stats.high }}">{{ stats.high }}</div><div class="stat-foot"><span class="foot-dot red"></span> Needs attention <span class="sparkline spark-red">▁▁▃▂▆▃▇█</span></div></article></div>
+  <div class="col-6 col-xl-3"><article class="stat-card stat-green reveal"><div class="stat-top"><span class="stat-icon">✓</span><span class="stat-code">BASE / 04</span></div><div class="stat-label">Low-risk events</div><div class="stat-number count-up" data-count="{{ stats.low }}">{{ stats.low }}</div><div class="stat-foot"><span class="foot-dot green"></span> No configured pattern <span class="sparkline spark-green">▁▄▃▅▂▄▆▇</span></div></article></div>
+</div>
+
+<div class="section-heading reveal"><div><span class="section-index">02</span><h2>Analysis workspace</h2><p>Run safe scenarios and inspect the output</p></div><span class="workspace-badge">INTERACTIVE MODULES <b>02</b></span></div>
+<div class="row g-3 workspace-row">
+  <div class="col-lg-5"><section class="panel simulation-panel reveal h-100">
+    <div class="panel-heading"><div><span class="panel-kicker">CONTROL DECK / A</span><h3>Simulation lab</h3></div><span class="panel-icon">⌘</span></div>
+    <p class="panel-description">Generate sample file events and watch the rule engine classify the activity.</p>
+    <div class="simulation-screen"><div class="screen-top"><span><i class="screen-dot"></i> SIMULATION TERMINAL</span><span>SAFE MODE</span></div><div class="terminal-lines"><div><span class="terminal-prompt">$</span> cloudshield --inspect activity</div><div class="terminal-muted">Loading heuristic rules <span class="terminal-dots"><i></i><i></i><i></i></span></div><div class="terminal-ready"><span>✓</span> Rule engine ready. Awaiting scenario input.</div></div><div class="scan-line"></div></div>
+    <form action="{{ url_for('simulate') }}" method="post" class="simulation-actions" id="simulation-form">
+      <button name="scenario" value="normal" class="scenario-btn normal-btn"><span class="scenario-symbol">↗</span><span><b>Simulate normal activity</b><small>Low-noise baseline pattern</small></span><span class="scenario-arrow">→</span></button>
+      <button name="scenario" value="suspicious" class="scenario-btn threat-btn"><span class="scenario-symbol">⚠</span><span><b>Simulate suspicious activity</b><small>Ransomware-like indicators</small></span><span class="scenario-arrow">→</span></button>
+    </form>
+    <div class="safe-note"><span>ⓘ</span><span><b>Sandbox simulation only.</b> No real files are encrypted, renamed, or deleted.</span></div>
+    {% if logged_in %}<div class="admin-actions"><a class="btn btn-ghost w-100" href="{{ url_for('export_logs') }}">⇩ Export event logs / S3</a><form action="{{ url_for('reset_demo') }}" method="post" onsubmit="return confirm('Clear demo-generated events?');"><button class="btn btn-ghost-danger w-100">Clear demo events</button></form></div>{% else %}<div class="admin-hint">Admin login unlocks alert review and log export.</div>{% endif %}
+  </section></div>
+  <div class="col-lg-7"><div class="d-flex flex-column gap-3 h-100">
+    <section class="panel chart-panel reveal"><div class="panel-heading"><div><span class="panel-kicker">TELEMETRY / 01</span><h3>Activity pulse</h3></div><span class="chart-live"><i></i> RECENT EVENTS</span></div><p class="panel-description">Risk score across the most recently recorded events.</p><div class="chart-wrap line-chart-wrap">{% if events %}<canvas id="activityChart" aria-label="Risk score across recent events" role="img"></canvas>{% else %}<div class="chart-empty"><div class="empty-wave">⌁</div><b>Waiting for telemetry</b><span>Run a simulation to populate the graph.</span></div>{% endif %}</div><div class="chart-foot"><span><i class="legend-line"></i> Risk score</span><span class="chart-foot-note">MAX SCORE <b>100</b></span></div></section>
+    <section class="panel chart-panel reveal"><div class="panel-heading"><div><span class="panel-kicker">RISK INTELLIGENCE / 02</span><h3>Severity distribution</h3></div><span class="chart-live"><i></i> ALL EVENTS</span></div><div class="distribution-layout"><div class="donut-wrap"><canvas id="severityChart" data-low="{{ stats.low }}" data-medium="{{ stats.medium }}" data-high="{{ stats.high_total }}" aria-label="Distribution of low, medium, and high severity events" role="img"></canvas><div class="donut-center"><b>{{ stats.total }}</b><span>EVENTS</span></div></div><div class="severity-legend"><div><span class="legend-swatch swatch-low"></span><span>Low severity</span><b>{{ stats.low }}</b></div><div><span class="legend-swatch swatch-medium"></span><span>Medium severity</span><b>{{ stats.medium }}</b></div><div><span class="legend-swatch swatch-high"></span><span>High severity</span><b>{{ stats.high_total }}</b></div><small>Based on stored events. Empty states show zero values.</small></div></div></section>
+  </div></div>
+</div>
+
+<div class="section-heading activity-heading reveal"><div><span class="section-index">03</span><h2>Recent activity stream</h2><p>Latest event classifications and review status</p></div><a href="{{ url_for('events_page') }}" class="view-all-link">Open event history <span>↗</span></a></div>
+<section class="panel events-panel reveal">
+  {% if events %}<div class="table-responsive"><table class="table activity-table align-middle"><thead><tr><th>Event / source</th><th>Severity</th><th>Risk score</th><th>Review status</th></tr></thead><tbody>{% for e in events %}
+  <tr><td><div class="event-file"><span class="file-icon">{{ '↻' if e.event_type == 'renamed' else '▤' }}</span><div><div class="event-name">{{ e.file_name }}</div><div class="event-meta">{{ e.event_type }} <span>·</span> {{ e.created_at }}</div><div class="event-reason">{{ e.reasons }}</div></div></div></td>
+  <td><span class="severity severity-{{ e.severity|lower }}"><i></i>{{ e.severity }}</span></td><td><div class="score-cell"><b>{{ e.risk_score }}</b><span class="score-track"><i style="width: {{ e.risk_score }}%"></i></span></div></td>
+  <td>{% if e.reviewed %}<span class="review-state reviewed">✓ Reviewed</span>{% elif e.severity == 'High' and logged_in %}<form action="{{ url_for('review', event_id=e.id) }}" method="post"><button class="review-btn">Mark reviewed ↗</button></form>{% else %}<span class="review-state">◷ Open</span>{% endif %}</td></tr>
+  {% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><div class="empty-orb">⌁</div><h3>No activity detected yet</h3><p>Your event stream is quiet. Run a simulation to see CloudShield's detection engine in action.</p><button class="btn btn-primary-glow" onclick="document.querySelector('#simulation-form')?.scrollIntoView({behavior:'smooth',block:'center'})">Launch first simulation ↗</button></div>{% endif %}
+</section>
+<div class="prototype-banner"><span class="prototype-icon">ⓘ</span><div><b>Prototype transparency</b><p>CloudShield uses transparent heuristic rules, not a trained AI model. A high score means configured patterns matched; it does not confirm a real infection.</p></div><span class="prototype-code">BUILD 0.1 / DEMO</span></div>
+<script id="chart-event-data" type="application/json">{{ events|tojson }}</script>
+{% endblock %}
